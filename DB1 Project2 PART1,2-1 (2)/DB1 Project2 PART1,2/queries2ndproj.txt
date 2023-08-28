@@ -1,0 +1,129 @@
+mysql> CREATE TABLE LIBR_STAFF(STAFF_NAME VARCHAR(32) NOT NULL,STAFF_IDNO INT NOT NULL PRIMARY KEY,STAFF_ADDR VARCHAR(32) NOT NULL,PHONE_NO INT NOT NULL,ROLE VARCHAR(32) NOT NULL);
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> DESC LIBR_STAFF;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| STAFF_NAME | varchar(32) | NO   |     | NULL    |       |
+| STAFF_IDNO | int         | NO   | PRI | NULL    |       |
+| STAFF_ADDR | varchar(32) | NO   |     | NULL    |       |
+| PHONE_NO   | int         | NO   |     | NULL    |       |
+| ROLE       | varchar(32) | NO   |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.02 sec)
+
+mysql> CREATE TABLE MEMBER(SSN INT NOT NULL PRIMARY KEY,MEMBER_TYPE VARCHAR(32) NOT NULL,MEMBER_NAME VARCHAR(32) NOT NULL,PHONE_NO INT NOT NULL);
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> DESC MEMBER;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| SSN         | int         | NO   | PRI | NULL    |       |
+| MEMBER_TYPE | varchar(32) | NO   |     | NULL    |       |
+| MEMBER_NAME | varchar(32) | NO   |     | NULL    |       |
+| PHONE_NO    | int         | NO   |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> CREATE TABLE PUBLISHER(PUBLISHER_ID INT NOT NULL PRIMARY KEY,P_NAME VARCHAR(32) NOT NULL,PUBLISHER_ADDR VARCHAR(32) NOT NULL,PHONE_NO INT NOT NULL);
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> DESC PUBLISHER;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| PUBLISHER_ID   | int         | NO   | PRI | NULL    |       |
+| P_NAME         | varchar(32) | NO   |     | NULL    |       |
+| PUBLISHER_ADDR | varchar(32) | NO   |     | NULL    |       |
+| PHONE_NO       | int         | NO   |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> CREATE TABLE BOOKS(ISBN INT NOT NULL PRIMARY KEY, STAFF_IDNO INT NOT NULL,PUBLISHER_ID INT NOT NULL,AUTHOR VARCHAR(32) NOT NULL,BOOK_TITLE VARCHAR(32) NOT NULL,SUB_AREA VARCHAR(32) NOT NULL,NUM_OF_COPIES INT NOT NULL,BOOK_DESC VARCHAR(32) NOT NULL, CONSTRAINT F_K_1 FOREIGN KEY(STAFF_IDNO) REFERENCES LIBR_STAFF(STAFF_IDNO), CONSTRAINT F_K_2 FOREIGN KEY(PUBLISHER_ID) REFERENCES PUBLISHER(PUBLISHER_ID));
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> DESC BOOKS;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| ISBN          | int         | NO   | PRI | NULL    |       |
+| STAFF_IDNO    | int         | NO   | MUL | NULL    |       |
+| PUBLISHER_ID  | int         | NO   | MUL | NULL    |       |
+| AUTHOR        | varchar(32) | NO   |     | NULL    |       |
+| BOOK_TITLE    | varchar(32) | NO   |     | NULL    |       |
+| SUB_AREA      | varchar(32) | NO   |     | NULL    |       |
+| NUM_OF_COPIES | int         | NO   |     | NULL    |       |
+| BOOK_DESC     | varchar(32) | NO   |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> CREATE TABLE LEND_STATUS(TITLE VARCHAR(32) NOT NULL,MEM_SSN INT NOT NULL,LEND_DATE VARCHAR(32) NOT NULL,CHECKOUT_DATE VARCHAR(32) NOT NULL,CONSTRAINT F_K_3 FOREIGN KEY(MEM_SSN) REFERENCES MEMBER(SSN));
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> DESC LEND_STATUS;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| TITLE         | varchar(32) | NO   |     | NULL    |       |
+| MEM_SSN       | int         | NO   | MUL | NULL    |       |
+| LEND_DATE     | varchar(32) | NO   |     | NULL    |       |
+| CHECKOUT_DATE | varchar(32) | NO   |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> CREATE TABLE RETURN_STATUS(TITLE VARCHAR(32) NOT NULL,MEM_SSN INT NOT NULL, STAFF_IDNO INT NOT NULL,LEND_DATE VARCHAR(32),CHECKOUT_DATE VARCHAR(32),CONSTRAINT F_K_4 FOREIGN KEY(MEM_SSN) REFERENCES MEMBER(SSN),CONSTRAINT F_K_5 FOREIGN KEY(STAFF_IDNO) REFERENCES LIBR_STAFF(STAFF_IDNO));
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> CREATE TABLE MEMBERSHIP(ID INT, MEM_SSN INT NOT NULL,LEND_DATE VARCHAR(32),EXPIRE_DATE VARCHAR(32),CONSTRAINT F_K_6 FOREIGN KEY(MEM_SSN) REFERENCES MEMBER(SSN));
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> DESC MEMBERSHIP;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| ID          | int         | YES  |     | NULL    |       |
+| MEM_SSN     | int         | NO   | MUL | NULL    |       |
+| LEND_DATE   | varchar(32) | YES  |     | NULL    |       |
+| EXPIRE_DATE | varchar(32) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> DESC RETURN_STATUS;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| TITLE         | varchar(32) | NO   |     | NULL    |       |
+| MEM_SSN       | int         | NO   | MUL | NULL    |       |
+| STAFF_IDNO    | int         | NO   | MUL | NULL    |       |
+| LEND_DATE     | varchar(32) | YES  |     | NULL    |       |
+| CHECKOUT_DATE | varchar(32) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> CREATE TABLE BORROWS(MEM_SSN INT,B_ISBN INT,CONSTRAINT FK_7 FOREIGN KEY(MEM_SSN) REFERENCES MEMBER(SSN),CONSTRAINT F_K_8 FOREIGN KEY(B_ISBN) REFERENCES BOOKS(ISBN));
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> DESC BORROWS;
++---------+------+------+-----+---------+-------+
+| Field   | Type | Null | Key | Default | Extra |
++---------+------+------+-----+---------+-------+
+| MEM_SSN | int  | YES  | MUL | NULL    |       |
+| B_ISBN  | int  | YES  | MUL | NULL    |       |
++---------+------+------+-----+---------+-------+
+2 rows in set (0.02 sec)
+
+mysql> CREATE TABLE MEM_LOCATION(M_LOCATION VARCHAR(32),MEM_SSN INT NOT NULL,CONSTRAINT F_K_9 FOREIGN KEY(MEM_SSN) REFERENCES MEMBER(SSN));
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> DESC MEM_LOCATION;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| M_LOCATION | varchar(32) | YES  |     | NULL    |       |
+| MEM_SSN    | int         | NO   | MUL | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+2 rows in set (0.02 sec)
+
+mysql> notee;

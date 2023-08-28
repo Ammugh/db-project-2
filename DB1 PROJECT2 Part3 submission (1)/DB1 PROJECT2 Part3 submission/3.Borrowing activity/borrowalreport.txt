@@ -1,0 +1,10 @@
+mysql> SELECT SUB_AREA,AUTHOR,NUM_OF_COPIES,(CURRENT_DATE-LEND_DATE) AS AMOUNT_OF_TIME_BOOKS_LENT FROM BOOKS,RETURN_STATUS WHERE BOOKS.BOOK_TITLE = RETURN_STATUS.TITLE AND LEND_DATE >= '2017-04-01' AND LEND_DATE <= '2018-04-22';
++----------+---------------------+---------------+---------------------------+
+| SUB_AREA | AUTHOR              | NUM_OF_COPIES | AMOUNT_OF_TIME_BOOKS_LENT |
++----------+---------------------+---------------+---------------------------+
+| Fiction  | Chetan Bhagat       |             1 |                     50697 |
+| Fantasy  | George R. R. Martin |           150 |                     50716 |
++----------+---------------------+---------------+---------------------------+
+2 rows in set (0.01 sec)
+
+mysql> notee;
